@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     @Override
                     public void run() {
                         Log.d(TAG,"onSensorChanged 开始摇了");
-                        
+
                     }
                 }).start();
             }
