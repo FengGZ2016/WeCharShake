@@ -16,10 +16,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.lang.ref.WeakReference;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
     private SensorManager mSensorManager;//传感器管理器
@@ -28,14 +28,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private final String TAG="MainActivity";
     private MyHandler mMyHandler;
 
-    private LinearLayout mLinearLayout_top;
-    private LinearLayout mLinearLayout_bom;
-    private ImageView mImageView_top_line;
-    private ImageView mImageView_bom_line;
+//    private LinearLayout mLinearLayout_top;
+//    private LinearLayout mLinearLayout_bom;
+//    private ImageView mImageView_top_line;
+//    private ImageView mImageView_bom_line;
+    private RelativeLayout mImgUp;
+    private RelativeLayout mImgDn;
 
     private Vibrator mVibrator;//手机震动
     private SoundPool mSoundPool;//摇一摇音效
-    private int mWeiChatAudio;//音效文件
+    private Map<Integer, Integer> loadSound;
+
 
     private static final int START_SHAKE = 0x1;
     private static final int AGAIN_SHAKE = 0x2;
@@ -47,25 +50,27 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //设置只竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-        initView();
+        init();
         mMyHandler=new MyHandler(this);
-        //初始化音效
-        mSoundPool=new SoundPool(1, AudioManager.STREAM_SYSTEM,5);
-        mWeiChatAudio=mSoundPool.load(this,R.raw.weichat_audio,1);
-        //获取震动服务
-        mVibrator= (Vibrator) getSystemService(VIBRATOR_SERVICE);
+
 
     }
 
-    private void initView() {
-        mLinearLayout_top= (LinearLayout) findViewById(R.id.main_linear_top);
-        mLinearLayout_bom= (LinearLayout) findViewById(R.id.main_linear_bottom);
-        mImageView_top_line= (ImageView) findViewById(R.id.main_shake_top_line);
-        mImageView_bom_line= (ImageView) findViewById(R.id.main_shake_bottom_line);
-
-        //顶部和底部横线不可见
-        mImageView_top_line.setVisibility(View.GONE);
-        mImageView_bom_line.setVisibility(View.GONE);
+    private void init() {
+//        mLinearLayout_top= (LinearLayout) findViewById(R.id.main_linear_top);
+//        mLinearLayout_bom= (LinearLayout) findViewById(R.id.main_linear_bottom);
+//        mImageView_top_line= (ImageView) findViewById(R.id.main_shake_top_line);
+//        mImageView_bom_line= (ImageView) findViewById(R.id.main_shake_bottom_line);
+//
+//        //顶部和底部横线不可见
+//        mImageView_top_line.setVisibility(View.GONE);
+//        mImageView_bom_line.setVisibility(View.GONE);
+        mImgUp= (RelativeLayout) findViewById(R.id.shakeImgUp);
+        mImgDn= (RelativeLayout) findViewById(R.id.shakeImgDown);
+        //初始化音效
+        mSoundPool=new SoundPool(2, AudioManager.STREAM_SYSTEM,5);
+        //获取震动服务
+        mVibrator= (Vibrator) getSystemService(VIBRATOR_SERVICE);
     }
 
     @Override
