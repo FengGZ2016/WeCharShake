@@ -22,9 +22,7 @@ import java.lang.ref.WeakReference;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
-    private SensorManager mSensorManager;//传感器管理器
-    private Sensor accelerometerSensor;//加速度传感器
-    private boolean isShake=false;
+
     private final String TAG="MainActivity";
     private MyHandler mMyHandler;
 
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private Vibrator mVibrator;//手机震动
     private SoundPool mSoundPool;//摇一摇音效
-    private Map<Integer, Integer> loadSound;
+    private Map<Integer, Integer> loadSound;//mp3文件
 
 
     private static final int START_SHAKE = 0x1;
@@ -52,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
         init();
         mMyHandler=new MyHandler(this);
+        // 调用工具类方法把assets目录下的声音存放在map中，返回一个HashMap
+        loadSound = Util.loadSound(mSoundPool, this);
 
 
     }
@@ -76,17 +76,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onStart() {
         super.onStart();
-        //获取传感器管理器
-        mSensorManager= (SensorManager) getSystemService(SENSOR_SERVICE);
-        if (mSensorManager!=null){
-            //获取加速度传感器
-            accelerometerSensor=mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            if (accelerometerSensor!=null){
-                //为传感器注册监听事件(1,监听器接口 2，传感器对象 3，传感器数据变化的采样率)
-                //SensorManager.SENSOR_DELAY_UI:延迟60秒
-                mSensorManager.registerListener((SensorEventListener) this,accelerometerSensor,SensorManager.SENSOR_DELAY_UI);
-            }
-        }
+
 
     }
 
@@ -94,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onPause() {
         super.onPause();
         //注销传感器
-        mSensorManager.unregisterListener((SensorEventListener) this);
+
     }
 
     @Override
