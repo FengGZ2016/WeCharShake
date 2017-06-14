@@ -39,7 +39,7 @@ public class ShakeListener implements SensorEventListener{
     /**
      * 开始注册传感器
      * */
-    private void start() {
+    public void start() {
         //获取传感器管理器
         mSensorManager= (SensorManager) mContext.getSystemService(SENSOR_SERVICE);
         if (mSensorManager!=null){
@@ -110,6 +110,7 @@ public class ShakeListener implements SensorEventListener{
 
     // 摇晃监听接口
     public interface OnShakeListener {
+        //开始震动了
         public void onShake();
     }
 
